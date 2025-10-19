@@ -67,13 +67,6 @@
     <view class="filters">
       <button 
         class="filter-btn" 
-        :class="{ active: filter === 'all' }"
-        @click="filter = 'all'"
-      >
-        全部
-      </button>
-      <button 
-        class="filter-btn" 
         :class="{ active: filter === 'active' }"
         @click="filter = 'active'"
       >
@@ -86,13 +79,20 @@
       >
         已完成
       </button>
+      <button 
+        class="filter-btn" 
+        :class="{ active: filter === 'all' }"
+        @click="filter = 'all'"
+      >
+        全部
+      </button>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-
+import { onLoad } from '@dcloudio/uni-app';
 // 任务接口定义
 interface Task {
   id: number;
@@ -104,15 +104,27 @@ interface Task {
 // 响应式数据
 const newTask = ref('');
 const filter = ref<'all' | 'active' | 'completed'>('all');
+const db = uniCloud.databaseForJQL()
 
 // 写死的任务数据 - 您可以在这里修改
-const tasks = ref<Task[]>([
-  { id: 1, text: '学习Vue3框架', completed: true, time: '09:00' },
-  { id: 2, text: '完成项目原型设计', completed: false, time: '10:30' },
-  { id: 3, text: '团队会议讨论需求', completed: false, time: '14:00' },
-  { id: 4, text: '编写技术文档', completed: true, time: '16:00' },
-  { id: 5, text: '健身锻炼', completed: false, time: '18:30' }
-]);
+// const tasks = ref<Task[]>([
+//   { id: 1, text: '学习Vue3框架', completed: true, time: '09:00' },
+//   { id: 2, text: '完成项目原型设计', completed: false, time: '10:30' },
+//   { id: 3, text: '团队会议讨论需求', completed: false, time: '14:00' },
+//   { id: 4, text: '编写技术文档', completed: true, time: '16:00' },
+//   { id: 5, text: '健身锻炼', completed: false, time: '18:30' }
+// ]);
+
+const tasks = ref<Task[]>([]);
+
+onLoad(() => {
+  db.collection('todolist').where(
+    '"user_id" == $env.uid'
+  ).get().then(res => {
+    console.log(res.data);
+    tasks.value = res.data;
+  });
+});
 
 // 计算属性
 const totalTasks = computed(() => tasks.value.length);
@@ -120,14 +132,14 @@ const completedTasks = computed(() => tasks.value.filter(task => task.completed)
 const pendingTasks = computed(() => tasks.value.filter(task => !task.completed).length);
 
 const filteredTasks = computed(() => {
-  switch (filter.value) {
-    case 'active':
-      return tasks.value.filter(task => !task.completed);
-    case 'completed':
-      return tasks.value.filter(task => task.completed);
-    default:
-      return tasks.value;
-  }
+    switch (filter.value) {
+        case 'all':
+            return tasks.value;
+        case 'completed':
+            return tasks.value.filter(task => task.completed);
+        default:
+            return tasks.value.filter(task => !task.completed);
+    }
 });
 
 // 方法
@@ -142,6 +154,12 @@ const addTask = () => {
       completed: false,
       time: timeString
     });
+
+    db.collection('todolist').add({
+      text: newTask.value,
+      user_id: uniCloud.getCurrentUserInfo().uid,
+    });
+
     newTask.value = '';
   }
 };

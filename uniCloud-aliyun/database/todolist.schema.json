@@ -1,0 +1,36 @@
+// todolist
+{
+	"bsonType": "object",
+	"description": "todolist",
+	"required": [],
+	"permission": {
+		"read": "auth.uid == doc.user_id",
+		"create": "auth.uid != null",
+		"update": "auth.uid == doc.user_id",
+		"delete": "auth.uid == doc.user_id"
+	},
+
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"text": {
+			"bsonType": "string",
+			"description": "任务名称"
+		},
+		"completed": {
+			"defaultValue": false,
+			"bsonType": "boolean",
+			"description": "是否完成"
+		},
+		"time": {
+			"bsonType": "string",
+			"description": "任务时间"
+		},
+		"user_id": {
+			"foreignKey": "uni-id-users._id",
+			"bsonType": "string",
+			"description": "用户ID"
+		}
+	}
+}
