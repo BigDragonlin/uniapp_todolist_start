@@ -40,7 +40,7 @@
     <view class="task-list">
       <view 
         v-for="task in filteredTasks" 
-        :key="task.id" 
+        :key="task._id" 
         class="task-item"
         :class="{ completed: task.completed }"
       >
