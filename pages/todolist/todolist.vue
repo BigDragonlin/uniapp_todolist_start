@@ -56,7 +56,7 @@
         </view>
         
         <view class="task-actions">
-          <button class="action-btn delete-btn" @click="deleteTask(task.id)">
+          <button class="action-btn delete-btn" @click="deleteTask(task._id)">
             <text class="delete-icon">×</text>
           </button>
         </view>
@@ -171,8 +171,14 @@ const toggleTask = (id: number) => {
   }
 };
 
-const deleteTask = (id: number) => {
-  tasks.value = tasks.value.filter(task => task.id !== id);
+const deleteTask = (id: string) => {
+  console.log(id);
+  tasks.value = tasks.value.filter(task => task._id !== id);
+  db.collection('todolist').where(
+    `"_id" == "${id}"`
+  ).remove().then(res => {
+    console.log(res);
+  })
 };
 </script>
 
