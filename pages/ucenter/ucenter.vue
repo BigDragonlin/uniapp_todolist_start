@@ -339,9 +339,13 @@
 	/* #endif*/
 	
 	.center {
-		flex: 1;
-		flex-direction: column;
-		background-color: #f8f8f8;
+		padding-top: calc(100rpx + constant(safe-area-inset-top)); /* iOS < 11.2 */
+		padding-top: calc(100rpx + env(safe-area-inset-top)); /* iOS >= 11.2 */
+		padding-left: 30rpx;
+		padding-right: 30rpx;
+		padding-bottom: 30rpx;
+		background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+		min-height: 100vh;
 	}
 
 	.userInfo {

@@ -8,13 +8,8 @@
 
     <!-- 添加任务区域 -->
     <view class="add-task">
-      <input 
-        class="task-input" 
-        v-model="newTask" 
-        placeholder="添加新任务..." 
-        placeholder-class="placeholder"
-        @confirm="addTask"
-      />
+      <input class="task-input" v-model="newTask" placeholder="添加新任务..." placeholder-class="placeholder"
+        @confirm="addTask" />
       <button class="add-btn" @click="addTask">
         <text class="add-icon">+</text>
       </button>
@@ -38,23 +33,18 @@
 
     <!-- 任务列表 -->
     <view class="task-list">
-      <view 
-        v-for="task in filteredTasks" 
-        :key="task._id" 
-        class="task-item"
-        :class="{ completed: task.completed }"
-      >
+      <view v-for="task in filteredTasks" :key="task._id" class="task-item" :class="{ completed: task.completed }">
         <view class="task-checkbox" @click="toggleTask(task.id)">
           <view class="checkbox" :class="{ checked: task.completed }">
             <text v-if="task.completed" class="checkmark">✓</text>
           </view>
         </view>
-        
+
         <view class="task-content">
           <text class="task-text">{{ task.text }}</text>
           <text class="task-time">{{ task.time }}</text>
         </view>
-        
+
         <view class="task-actions">
           <button class="action-btn delete-btn" @click="deleteTask(task._id)">
             <text class="delete-icon">×</text>
@@ -65,25 +55,13 @@
 
     <!-- 过滤器 -->
     <view class="filters">
-      <button 
-        class="filter-btn" 
-        :class="{ active: filter === 'active' }"
-        @click="filter = 'active'"
-      >
+      <button class="filter-btn" :class="{ active: filter === 'active' }" @click="filter = 'active'">
         待完成
       </button>
-      <button 
-        class="filter-btn" 
-        :class="{ active: filter === 'completed' }"
-        @click="filter = 'completed'"
-      >
+      <button class="filter-btn" :class="{ active: filter === 'completed' }" @click="filter = 'completed'">
         已完成
       </button>
-      <button 
-        class="filter-btn" 
-        :class="{ active: filter === 'all' }"
-        @click="filter = 'all'"
-      >
+      <button class="filter-btn" :class="{ active: filter === 'all' }" @click="filter = 'all'">
         全部
       </button>
     </view>
@@ -132,14 +110,14 @@ const completedTasks = computed(() => tasks.value.filter(task => task.completed)
 const pendingTasks = computed(() => tasks.value.filter(task => !task.completed).length);
 
 const filteredTasks = computed(() => {
-    switch (filter.value) {
-        case 'all':
-            return tasks.value;
-        case 'completed':
-            return tasks.value.filter(task => task.completed);
-        default:
-            return tasks.value.filter(task => !task.completed);
-    }
+  switch (filter.value) {
+    case 'all':
+      return tasks.value;
+    case 'completed':
+      return tasks.value.filter(task => task.completed);
+    default:
+      return tasks.value.filter(task => !task.completed);
+  }
 });
 
 // 方法
@@ -147,7 +125,7 @@ const addTask = () => {
   if (newTask.value.trim()) {
     const now = new Date();
     const timeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-    
+
     tasks.value.push({
       id: Date.now(),
       text: newTask.value,
@@ -184,7 +162,11 @@ const deleteTask = (id: string) => {
 
 <style scoped>
 .todo-container {
-  padding: 30rpx;
+  padding-top: calc(100rpx + constant(safe-area-inset-top)); /* iOS < 11.2 */
+  padding-top: calc(100rpx + env(safe-area-inset-top)); /* iOS >= 11.2 */
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  padding-bottom: 30rpx;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   min-height: 100vh;
 }
