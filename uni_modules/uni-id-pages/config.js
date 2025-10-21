@@ -26,7 +26,7 @@ export default {
     // #ifdef APP
     'apple',
     // #endif
-    'smsCode',
+    // 'smsCode',
     // #ifdef APP-HARMONY || MP-HARMONY
     'huawei',
     'huaweiMobile'
