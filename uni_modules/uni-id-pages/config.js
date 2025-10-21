@@ -34,8 +34,8 @@ export default {
   ],
   // 政策协议
   agreements: {
-    serviceUrl: 'https://xxx', // 用户服务协议链接
-    privacyUrl: 'https://xxx', // 隐私政策条款链接
+    serviceUrl: 'http://static-mp-f724bd2e-a694-4db0-af25-79925f7267b5.next.bspapp.com/markdown-share-docs/40a7bdf18b3aac0c1b59441058738322/', // 用户服务协议链接
+    privacyUrl: 'http://static-mp-f724bd2e-a694-4db0-af25-79925f7267b5.next.bspapp.com/markdown-share-docs/7a2ac4b90bf5814a9c184e4bae7d4299/', // 隐私政策条款链接
     // 哪些场景下显示，1.注册（包括登录并注册，如：微信登录、苹果登录、短信验证码登录）、2.登录（如：用户名密码登录）
     scope: [
       'register', 'login', 'realNameVerify'
